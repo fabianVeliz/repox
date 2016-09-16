@@ -27,13 +27,28 @@ class Form extends React.Component {
   }
 
   render () {
-    return <form onSubmit={this.handleSubmit.bind(this)}>
-      <div>
-        <input type="text" value={this.state.user} onChange={this.handleUser.bind(this)}/>
-        <button type="submit">Search</button>
+    return <form onSubmit={this.handleSubmit.bind(this)} className="well well-lg">
+      <div className="form-group">
+        <label for="user">Username:</label>
+        <input
+          type="text"
+          id="user"
+          className="form-control"
+          value={this.state.user}
+          onChange={this.handleUser.bind(this)}
+        />
       </div>
-      <input type="checkbox" checked={this.state.includeAsMember} onChange={this.handleIncludeAsMember.bind(this)}/>
-      <label>Include repositories that user is member</label>
+      <div className="checkbox">
+        <label>
+          <input
+            type="checkbox"
+            checked={this.state.includeAsMember}
+            onChange={this.handleIncludeAsMember.bind(this)}
+          />
+          Include repositories that user is member
+        </label>
+      </div>
+      <button type="submit" className="btn btn-primary">Search</button>
     </form>;
   }
 }
@@ -43,34 +58,45 @@ class Result extends React.Component {
   render () {
     var result = this.props.result;
 
-    return <li>
-      <h3>
-        <a href={result.html_url} target="_blank">
-          {result.name}
-        </a>
-      </h3>
-
-      <p>{result.fork}</p>
-      <p>{result.description}</p>
-      <p>{moment(result.updated_at).fromNow()}</p>
-
-      <div>
-        <div>
-          <span>{result.language}</span>
+    return <li className="list-group-item">
+      <div className="clearfix">
+        <div className="pull-left">
+          <h3 class="list-group-item-heading">
+            <a href={result.html_url} target="_blank">
+              {result.name}
+            </a>
+          </h3>
+          <div>{
+            result.fork &&
+            <p className="statistics-item">
+              <i className="fa fa-code-fork"></i>
+              <span>Forked</span>
+            </p>
+            }</div>
         </div>
-        <div>
-          <i className="fa fa-code-fork"></i>
-          <span>{result.forks_count}</span>
-        </div>
-        <div>
-          <i className="fa fa-star"></i>
-          <span>{result.stargazers_count}</span>
-        </div>
-        <div>
-          <i className="fa fa-eye"></i>
-          <span>{result.watchers_count}</span>
+        <div className="pull-right">
+          <div>
+            <div className="pull-left statistics-item">
+              <span>{result.language}</span>
+            </div>
+            <div className="pull-left statistics-item">
+              <i className="fa fa-code-fork"></i>
+              <span>{result.forks_count}</span>
+            </div>
+            <div className="pull-left statistics-item">
+              <i className="fa fa-star"></i>
+              <span>{result.stargazers_count}</span>
+            </div>
+            <div className="pull-left statistics-item">
+              <i className="fa fa-eye"></i>
+              <span>{result.watchers_count}</span>
+            </div>
+          </div>
         </div>
       </div>
+
+      <p>{result.description}</p>
+      <p className="updated">{moment(result.updated_at).fromNow()}</p>
     </li>;
   }
 }
@@ -79,7 +105,7 @@ class Result extends React.Component {
 class Results extends React.Component {
   render () {
 
-    return <ul className="result-list">
+    return <ul className="list-group">
       {
         this.props.results.map(function(result){
           return <Result key={result.id} result={result} />
@@ -129,6 +155,7 @@ class App extends React.Component {
 
   render () {
     return <div className="app">
+      <h1 className="text-primary page-title">Repox</h1>
       <Form
         user={this.state.user}
         includeAsMember={this.state.includeAsMember}

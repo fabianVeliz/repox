@@ -1,1 +1,9 @@
-/* App styles */
+#content { padding: 0 20px }
+
+.page-title { margin-bottom: 20px; }
+
+.statistics-item { margin-right: 10px; }
+.statistics-item:last-child { margin-right: 0; }
+.statistics-item .fa { margin-right: 2px; }
+
+.updated { color: #757575; }
